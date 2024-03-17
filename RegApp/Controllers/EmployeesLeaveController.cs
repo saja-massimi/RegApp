@@ -29,10 +29,24 @@ namespace RegApp.Controllers
         public async Task<IActionResult> GetEmployeesLeave(int id)
         {
 
-            List<EmployeesLeaveModel> results = await _context.EmployeesLeave.FromSqlRaw("EXEC RetrieveEmpolyeesLeaves "+id).ToListAsync();
 
-            return Ok(results);
 
+           var res = await _context.EmployeesLeave
+          .FromSqlRaw("EXEC RetrieveEmpolyeesLeaves {0}", id)
+          .ToListAsync();
+
+
+            foreach (var type in res)
+            {
+                _context.Entry(type).Reference(e => e.leaveType).Load();
+            }
+
+         
+            return Ok(res);
+
+
+
+           
 
 
         }

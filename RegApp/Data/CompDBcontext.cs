@@ -31,6 +31,17 @@ namespace RegApp.Data
                 .Property(a => a.LeaveBalance)
                 .HasColumnType("deciaml(10,2)");
 
+            modelBuilder.Entity<EmployeesModel>()
+              .HasOne(e => e.Department)
+              .WithMany()
+              .HasForeignKey(e => e.DepartmentID);
+
+
+            modelBuilder.Entity<EmployeesLeaveModel>()
+             .HasOne(e => e.leaveType)
+             .WithMany()
+             .HasForeignKey(e => e.LeaveType);
+
         }
 
 

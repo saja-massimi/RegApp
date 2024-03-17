@@ -5,16 +5,15 @@ namespace RegApp.Models
 {
     public class EmployeesModel
     {
+       
+
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int EmpID { get; set; }
 
         public string? EmpNameEN { get; set; }
 
         public string? EmpNameAR { get; set; }
 
-
-        [ForeignKey("Manager")]
         public int ManagerID { get; set; }
 
         public bool isManger { get; set; }
@@ -24,9 +23,6 @@ namespace RegApp.Models
         public DateTime HireDate { get; set; }
 
         public string? JobTitle { get; set; }
-
-        [ForeignKey("Department")]
-        public int DepartmentID { get; set; }
 
         public decimal LeaveBalance { get; set; }
 
@@ -38,25 +34,11 @@ namespace RegApp.Models
 
         public string? empModifiedBy { get; set; }
 
+        public int DepartmentID { get; set; }     
 
-        //  public DepartmentsModel? dep { get; set; }
-
-
-
-
-        public string? DepartmentNameEN { get; set; }
-
-        public string? DepartmentNameAR { get; set; }
-
-        public DateTime Created { get; set; }
-
-        public string? CreatedBy { get; set; }
-
-        public DateTime Modified { get; set; }
-
-        public string? ModifiedBy { get; set; }
-
-
-
+        [ForeignKey("DepartmentID")]
+        public DepartmentsModel? Department { get; set; }
+       
+    
     }
 }

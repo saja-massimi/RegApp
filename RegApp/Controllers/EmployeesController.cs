@@ -27,11 +27,22 @@ namespace RegApp.Controllers
 
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetEmployees(int id)
+        public async Task<IActionResult> GetEmployeesAsync(int id)
         {
-           
-            List<EmployeesModel> res = await _context.Employees.FromSqlRaw("EXEC RetrieveEmployee " + id).ToListAsync();
+
+         
+            var res = await _context.Employees
+         .FromSqlRaw("EXEC RetrieveEmployee {0}", id) 
+         .ToListAsync();
+
+
+            foreach (var employee in res)
+            {
+                _context.Entry(employee).Reference(e => e.Department).Load();
+            }
+
             return Ok(res);
+
 
 
         }
@@ -52,10 +63,10 @@ namespace RegApp.Controllers
                 new SqlParameter("@JobTitle", employeesModel.JobTitle),
                 new SqlParameter("@DepartmentID", employeesModel.DepartmentID),
                 new SqlParameter("@LeaveBalance", employeesModel.LeaveBalance),
-                new SqlParameter("@Created", employeesModel.Created),
-                new SqlParameter("@CreatedBy", employeesModel.CreatedBy),
-                new SqlParameter("@Modified", employeesModel.Modified),
-                new SqlParameter("@ModifiedBy", employeesModel.ModifiedBy));
+                new SqlParameter("@Created", employeesModel.empCreated),
+                new SqlParameter("@CreatedBy", employeesModel.empCreatedBy),
+                new SqlParameter("@Modified", employeesModel.empModified),
+                new SqlParameter("@ModifiedBy", employeesModel.empModifiedBy));
 
             return Ok();
         }
@@ -64,8 +75,8 @@ namespace RegApp.Controllers
         public async Task<IActionResult> PostEmployees(EmployeesModel employeesModel)
         {
             await _context.Database.ExecuteSqlRawAsync("EXEC AddEmployee @EmpNameEN, @EmpNameAR, @ManagerID, @isManager, @Salary, @HireDate,@JobTitle,@DepartmentID,@LeaveBalance,@Created,@CreatedBy,@Modified,@ModifiedBy",
-             
-               new SqlParameter("@EmpNameEN", employeesModel.EmpNameEN),
+
+              new SqlParameter("@EmpNameEN", employeesModel.EmpNameEN),
                 new SqlParameter("@EmpNameAR", employeesModel.EmpNameAR),
                 new SqlParameter("@ManagerID", employeesModel.ManagerID),
                 new SqlParameter("@isManager", employeesModel.isManger),
@@ -74,10 +85,10 @@ namespace RegApp.Controllers
                 new SqlParameter("@JobTitle", employeesModel.JobTitle),
                 new SqlParameter("@DepartmentID", employeesModel.DepartmentID),
                 new SqlParameter("@LeaveBalance", employeesModel.LeaveBalance),
-                new SqlParameter("@Created", employeesModel.Created),
-                new SqlParameter("@CreatedBy", employeesModel.CreatedBy),
-                new SqlParameter("@Modified", employeesModel.Modified),
-                new SqlParameter("@ModifiedBy", employeesModel.ModifiedBy));
+                new SqlParameter("@Created", employeesModel.empCreated),
+                new SqlParameter("@CreatedBy", employeesModel.empCreatedBy),
+                new SqlParameter("@Modified", employeesModel.empModified),
+                new SqlParameter("@ModifiedBy", employeesModel.empModifiedBy));
 
             return Ok();
         }
