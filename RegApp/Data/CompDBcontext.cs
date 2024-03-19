@@ -14,11 +14,14 @@ namespace RegApp.Data
         public DbSet<EmployeesModel> Employees { get; set; }
         public DbSet<EmployeesLeaveModel> EmployeesLeave { get; set; }
         public DbSet<JobTitleModel> JobTitle { get; set; }
-        public DbSet<LeaveTypeModel> LeaveType { get; set; }
+        public DbSet<LeavesTypeModel> LeaveType { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 
+
+            modelBuilder.Entity<LeavesTypeModel>()
+            .ToTable("LeavesType");
 
 
             modelBuilder.Entity<EmployeesModel>()
@@ -38,9 +41,9 @@ namespace RegApp.Data
 
 
             modelBuilder.Entity<EmployeesLeaveModel>()
-             .HasOne(e => e.leaveType)
+             .HasOne(e => e.LeavesType)
              .WithMany()
-             .HasForeignKey(e => e.LeaveType);
+             .HasForeignKey(e => e.LeaveTypeID);
 
         }
 

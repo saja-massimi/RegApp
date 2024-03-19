@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using RegApp.Data;
+using System.Configuration;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,8 +13,9 @@ builder.Services.AddDbContext<AppDBContext>(options =>
   options.UseSqlServer(builder.Configuration.GetConnectionString("UserContext")));
 
 builder.Services.AddDbContext<CompDBcontext>(options =>
-  options.UseSqlServer(builder.Configuration.GetConnectionString("EmployeesContext")));
+  options.UseSqlServer(builder.Configuration.GetConnectionString("EmployeesContext")) .LogTo(Console.WriteLine, LogLevel.Information));
 
+          
 
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

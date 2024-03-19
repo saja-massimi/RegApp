@@ -14,36 +14,36 @@ namespace RegApp.Controllers
     //[Authorize]
     [Route("api/[controller]")]
     [ApiController]
-    public class LeaveTypeController : ControllerBase
+    public class LeavesTypeController : ControllerBase
     {
         private readonly CompDBcontext _context;
 
-        public LeaveTypeController(CompDBcontext context)
+        public LeavesTypeController(CompDBcontext context)
         {
             _context = context;
         }
 
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<LeaveTypeModel>> GetLeaveTypeModel(int id)
+        public async Task<ActionResult<LeavesTypeModel>> GetLeaveTypeModel(int id)
         {
-            List<LeaveTypeModel> results = await _context.LeaveType.FromSqlRaw("EXEC RetrieveLeavesType "+id).ToListAsync();
+            List<LeavesTypeModel> results = await _context.LeaveType.FromSqlRaw("EXEC RetrieveLeavesType "+id).ToListAsync();
 
             return Ok(results);
         }
 
        
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutLeaveTypeModel(int id, LeaveTypeModel leaveTypeModel)
+        public async Task<IActionResult> PutLeaveTypeModel(int id, LeavesTypeModel leaveTypeModel)
         {
             await _context.Database.ExecuteSqlRawAsync("EXEC UpdateLeavesType @id, @Type, @LeaveBalance, @created, @createdBy, @modified, @modifiedBy",
                new SqlParameter("@id", id),
                new SqlParameter("@Type", leaveTypeModel.Type),
                new SqlParameter("@LeaveBalance", leaveTypeModel.LeaveBalance),
-               new SqlParameter("@created", leaveTypeModel.Created),
-               new SqlParameter("@createdBy", leaveTypeModel.CreatedBy),
-               new SqlParameter("@modified", leaveTypeModel.Modified),
-               new SqlParameter("@modifiedBy", leaveTypeModel.ModifiedBy));
+               new SqlParameter("@created", leaveTypeModel.leaveCreated),
+               new SqlParameter("@createdBy", leaveTypeModel.leaveCreatedBy),
+               new SqlParameter("@modified", leaveTypeModel.leaveModified),
+               new SqlParameter("@modifiedBy", leaveTypeModel.leaveModifiedBy));
             return Ok();
 
         }
@@ -51,15 +51,15 @@ namespace RegApp.Controllers
         
 
         [HttpPost]
-        public async Task<ActionResult<LeaveTypeModel>> PostLeaveTypeModel(LeaveTypeModel leaveTypeModel)
+        public async Task<ActionResult<LeavesTypeModel>> PostLeaveTypeModel(LeavesTypeModel leaveTypeModel)
         {
             await _context.Database.ExecuteSqlRawAsync("EXEC AddLeavesType  @Type, @LeaveBalance, @created, @createdBy, @modified, @modifiedBy",
                new SqlParameter("@Type", leaveTypeModel.Type),
                new SqlParameter("@LeaveBalance", leaveTypeModel.LeaveBalance),
-               new SqlParameter("@created", leaveTypeModel.Created),
-               new SqlParameter("@createdBy", leaveTypeModel.CreatedBy),
-               new SqlParameter("@modified", leaveTypeModel.Modified),
-               new SqlParameter("@modifiedBy", leaveTypeModel.ModifiedBy));
+               new SqlParameter("@created", leaveTypeModel.leaveCreated),
+               new SqlParameter("@createdBy", leaveTypeModel.leaveCreatedBy),
+               new SqlParameter("@modified", leaveTypeModel.leaveModified),
+               new SqlParameter("@modifiedBy", leaveTypeModel.leaveModifiedBy));
 
             return Ok();
 

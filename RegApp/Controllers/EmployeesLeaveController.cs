@@ -29,24 +29,25 @@ namespace RegApp.Controllers
         public async Task<IActionResult> GetEmployeesLeave(int id)
         {
 
+          
+            
+                   
 
-
-           var res = await _context.EmployeesLeave
-          .FromSqlRaw("EXEC RetrieveEmpolyeesLeaves {0}", id)
-          .ToListAsync();
-
+            var res = await _context.EmployeesLeave
+        .FromSqlInterpolated($"EXEC RetrieveEmpolyeesLeaves {id}")
+        .ToListAsync();
 
             foreach (var type in res)
             {
-                _context.Entry(type).Reference(e => e.leaveType).Load();
+                _context.Entry(type).Reference(e => e.LeavesType).Load();
             }
 
-         
+
+
+
+
             return Ok(res);
 
-
-
-           
 
 
         }
@@ -54,11 +55,11 @@ namespace RegApp.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutEmployeesLeaveModel(int id, EmployeesLeaveModel employeesLeaveModel)
         {
-            await _context.Database.ExecuteSqlRawAsync("EXEC updateEmpolyeesLeaves @id, @StartDate ,@EndDate, @LeaveType,@NumberOfDays,@Notes, @created, @createdBy, @modified, @modifiedBy",
+            await _context.Database.ExecuteSqlRawAsync("EXEC updateEmpolyeesLeaves @id, @StartDate ,@EndDate, @LeaveTypeID,@NumberOfDays,@Notes, @created, @createdBy, @modified, @modifiedBy",
                 new SqlParameter("@id", id),
                 new SqlParameter("@StartDate", employeesLeaveModel.StartDate),
                 new SqlParameter("@EndDate", employeesLeaveModel.EndDate),
-                new SqlParameter("@LeaveType", employeesLeaveModel.LeaveType),
+                new SqlParameter("@LeaveTypeID", employeesLeaveModel.LeaveTypeID),
                 new SqlParameter("@NumberOfDays", employeesLeaveModel.NumberOfDays),
                 new SqlParameter("@Notes", employeesLeaveModel.Notes),
                 new SqlParameter("@created", employeesLeaveModel.Created),
@@ -75,10 +76,10 @@ namespace RegApp.Controllers
         [HttpPost]
         public async Task<ActionResult<EmployeesLeaveModel>> PostEmployeesLeaveModel(EmployeesLeaveModel employeesLeaveModel)
         {
-            await _context.Database.ExecuteSqlRawAsync("EXEC AddEmpolyeesLeaves  @StartDate ,@EndDate, @LeaveType,@NumberOfDays,@Notes, @created, @createdBy, @modified, @modifiedBy",
+            await _context.Database.ExecuteSqlRawAsync("EXEC AddEmpolyeesLeaves  @StartDate ,@EndDate, @LeaveTypeID,@NumberOfDays,@Notes, @created, @createdBy, @modified, @modifiedBy",
                   new SqlParameter("@StartDate", employeesLeaveModel.StartDate),
                   new SqlParameter("@EndDate", employeesLeaveModel.EndDate),
-                  new SqlParameter("@LeaveType", employeesLeaveModel.LeaveType),
+                  new SqlParameter("@LeaveTypeID", employeesLeaveModel.LeaveTypeID),
                   new SqlParameter("@NumberOfDays", employeesLeaveModel.NumberOfDays),
                   new SqlParameter("@Notes", employeesLeaveModel.Notes),
                   new SqlParameter("@created", employeesLeaveModel.Created),

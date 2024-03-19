@@ -12,7 +12,8 @@ namespace RegApp.Models
 
         public DateTime EndDate { get; set; }
 
-        public int LeaveType { get; set; }
+        [ForeignKey("ID")]
+        public int LeaveTypeID { get; set; }
 
         public int NumberOfDays { get; set; }
 
@@ -28,8 +29,7 @@ namespace RegApp.Models
 
 
 
-        [ForeignKey("LeaveType")]
-        public LeaveTypeModel? leaveType { get; set; }
+        public LeavesTypeModel? LeavesType { get; set; }
 
     }
 }

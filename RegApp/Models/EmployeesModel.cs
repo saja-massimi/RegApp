@@ -34,9 +34,9 @@ namespace RegApp.Models
 
         public string? empModifiedBy { get; set; }
 
+        [ForeignKey("ID")]
         public int DepartmentID { get; set; }     
 
-        [ForeignKey("DepartmentID")]
         public DepartmentsModel? Department { get; set; }
        
     
